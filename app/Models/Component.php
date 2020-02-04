@@ -10,4 +10,9 @@ class Component extends BaseModel
     {
         return $this->belongsTo(ComponentGroup::class, 'component_group_id');
     }
+
+    public function incidents()
+    {
+        return $this->belongsToMany(Incident::class);
+    }
 }
