@@ -62,4 +62,16 @@ class Incident extends Model
     {
         return $this->hasMany(IncidentUpdate::class);
     }
+
+    /**
+     * Define delete function to remove associated entries.
+     */
+    public function delete()
+    {
+        foreach ($this->updates()->get() as $update) {
+            $update->delete();
+        }
+        
+        parent::delete();
+    }
 }

@@ -25,18 +25,29 @@ Route::group(['middleware' => ['auth:api']], function() {
      */
 
     /**
+     * Fetch all incidents for a given component.
+     */
+    Route::get('components/{component_id}', 'IncidentController@index')
+        ->where('component_id', '[0-9]+');
+
+    /**
      * Create incident.
      */
-    Route::post('incident/create', 'IncidentController@create');
+    Route::post('components/{component_id}/incidents/create', 'IncidentController@store')
+        ->where('component_id', '[0-9]+');
 
     /**
      * Read incident details.
      */
-    Route::get('incident/{id}', 'IncidentController@show');
+    Route::get('components/{component_id}/incidents/{incident_id}', 'IncidentController@show')
+        ->where('component_id', '[0-9]+')
+        ->where('incident_id', '[0-9]+');
 
     /**
      * Add update to incident.
      */
-    Route::get('incident/{id}/update', 'IncidentControllers@addUpdate');
+    Route::get('components/{component_id}/incidents/{incident_id}/update', 'IncidentControllers@update')
+        ->where('component_id', '[0-9]+')
+        ->where('incident_id', '[0-9]+');
 });
 
