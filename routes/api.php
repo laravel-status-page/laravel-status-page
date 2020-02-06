@@ -49,5 +49,12 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('components/{component_id}/incidents/{incident_id}/update', 'IncidentControllers@update')
         ->where('component_id', '[0-9]+')
         ->where('incident_id', '[0-9]+');
+
+    /**
+     * Delete incident and assocaited updates.
+     */
+    Route::post('components/{component_id}/incidents/{incident_id}/delete', 'IncidentController@destroy')
+        ->where('component_id', '[0-9]+')
+        ->where('incident_id', '[0-9]+');
 });
 

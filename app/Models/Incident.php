@@ -71,7 +71,7 @@ class Incident extends Model
         foreach ($this->updates()->get() as $update) {
             $update->delete();
         }
-        
+
         parent::delete();
     }
 }
