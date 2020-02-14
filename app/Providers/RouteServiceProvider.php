@@ -26,13 +26,15 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
+     * @param Router $router
      * @return void
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::model('component', \App\Models\Component::class);
+        Route::model('incident', \App\Models\Incident::class);
     }
 
     /**
