@@ -14,16 +14,12 @@ class IncidentController extends Controller
      * Display a listing of incidents.
      *
      * @param Request $request
-     * @param int $component_id
+     * @param Component $component
      * @return Response
      */
-    public function index(Request $request, int $component_id)
+    public function index(Request $request, Component $component)
     {
-        if (!Component::find($component_id)) {
-            return response('Component not found.', 400);
-        }
-
-        return response(Incident::where('component_id', $component_id)->get(), 200);
+        return response(Incident::where('component_id', $component->id)->get(), 200);
     }
 
     /**
@@ -40,31 +36,23 @@ class IncidentController extends Controller
      * Create a new incident.
      *
      * @param Request $request
-     * @param int $component_id
+     * @param Component $component
      * @return Response
      */
-    public function store(Request $request, int $component_id)
+    public function store(Request $request, Component $component)
     {
-        $component = Component::find($component_id);
-
-        if (!component) {
-            return response('Component not found.', 400);
-        }
-
         $this->validate($request, [
             'name' => 'required',
             'date' => 'required|date',
             'status' => 'int'
         ]);
 
-        $incident = Incident::create([
+        $component->incidents()->create([
             'user_id' => $request->user()->id,
             'name' => $request->input('name'),
             'status' => $request->input('status'),
             'occurred_at' => $request->input('date')
         ]);
-
-        $component->incidents()->save($incident);
 
         return response('Incident created.', 200);
     }
@@ -73,20 +61,14 @@ class IncidentController extends Controller
      * Return details for a single incident.
      *
      * @param Request $request
-     * @param int $component_id
-     * @param int $incident_id
+     * @param Component $component
+     * @param Incident $incident
      * @return Response
      */
-    public function show(Request $request, int $component_id, int $incident_id)
+    public function show(Request $request, Component $component, Incident $incident)
     {
-        if (!Component::find($component_id)) {
-            return response('Component not found.', 400);
-        }
-
-        $incident = Incident::find($incident_id);
-
-        if (!$incident) {
-            return response('Incident not found.', 400);
+        if ($incident->component_id != $component->id) {
+            return response('Incident not found for that component.', 404);
         }
 
         return $incident;
@@ -96,11 +78,11 @@ class IncidentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Request $request
-     * @param int $component_id
-     * @param int $incident_id
+     * @param Component $component
+     * @param Incidnet $incident
      * @return void
      */
-    public function edit(Request $request, int $component_id, int $incident_id)
+    public function edit(Request $request, Component $component, Incidnet $incident)
     {
 
     }
@@ -109,20 +91,14 @@ class IncidentController extends Controller
      * Update incident with IncidentUpdate.
      *
      * @param Request $request
-     * @param int $component_id
-     * @param int $incident_id
+     * @param Component $component
+     * @param Incident $incident
      * @return void
      */
-    public function update(Request $request, int $component_id, int $incident_id)
+    public function update(Request $request, Component $component, Incident $incident)
     {
-        if (!Component::find($component_id)) {
-            return response('Component not found.', 400);
-        }
-
-        $incident = Incident::find($incident_id);
-
-        if (!$incident) {
-            return response('Incident not found.', 400);
+        if ($incident->component_id != $component->id) {
+            return response('Incident not found for that component.', 404);
         }
 
         $this->validate($request, [
@@ -141,27 +117,20 @@ class IncidentController extends Controller
                 'message' => $request->input('message')
             ]), 200
         );
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @param int $component_id
-     * @param int $incident_id
+     * @param Component $component
+     * @param Incident $incident
      * @return Response
      */
-    public function destroy(Request $request, int $component_id, int $incident_id)
+    public function destroy(Request $request, Component $component, Incident $incident)
     {
-        if (!Component::find($component_id)) {
-            return response('Component not found.', 400);
-        }
-
-        $incident = Incident::find($incident_id);
-
-        if (!$incident) {
-            return response('Incident not found.', 400);
+        if ($incident->component_id != $component->id) {
+            return response('Incident not found for that component.', 404);
         }
 
         $incident->delete();

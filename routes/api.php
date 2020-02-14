@@ -27,34 +27,26 @@ Route::group(['middleware' => ['auth:api']], function() {
     /**
      * Fetch all incidents for a given component.
      */
-    Route::get('components/{component_id}', 'IncidentController@index')
-        ->where('component_id', '[0-9]+');
+    Route::get('components/{component}', 'IncidentController@index');
 
     /**
      * Create incident.
      */
-    Route::post('components/{component_id}/incidents/create', 'IncidentController@store')
-        ->where('component_id', '[0-9]+');
+    Route::post('components/{component}/incidents/create', 'IncidentController@store');
 
     /**
      * Read incident details.
      */
-    Route::get('components/{component_id}/incidents/{incident_id}', 'IncidentController@show')
-        ->where('component_id', '[0-9]+')
-        ->where('incident_id', '[0-9]+');
+    Route::get('components/{component}/incidents/{incident}', 'IncidentController@show');
 
     /**
      * Add update to incident.
      */
-    Route::get('components/{component_id}/incidents/{incident_id}/update', 'IncidentControllers@update')
-        ->where('component_id', '[0-9]+')
-        ->where('incident_id', '[0-9]+');
+    Route::get('components/{component}/incidents/{incident}/update', 'IncidentControllers@update');
 
     /**
      * Delete incident and assocaited updates.
      */
-    Route::post('components/{component_id}/incidents/{incident_id}/delete', 'IncidentController@destroy')
-        ->where('component_id', '[0-9]+')
-        ->where('incident_id', '[0-9]+');
+    Route::post('components/{component}/incidents/{incident}/delete', 'IncidentController@destroy');
 });
 

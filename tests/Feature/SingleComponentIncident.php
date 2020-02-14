@@ -42,7 +42,7 @@ class SingleComponentIncident extends TestCase
     public function has_owner()
     {
         $this->assertIsInt($this->incident->user_id);
-        $this->assertIsInt(User::find($this->incident->user_id)->id);
+        $this->assertInstanceOf(User::class, User::find($this->incident->user_id));
     }
 
     /** @test */
@@ -61,6 +61,6 @@ class SingleComponentIncident extends TestCase
 
         $this->assertTrue($components->count() > 0);
         $this->assertIsInt($components->first()->id);
-        $this->assertTrue(class_basename($components->first()) == 'Component');
+        $this->assertInstanceOf(Component::class, $components->first());
     }
 }
